@@ -1,59 +1,44 @@
 package application;
 
-import java.util.InputMismatchException;
 import java.util.Locale;
 import java.util.Scanner;
 
 import model.entities.Account;
-import model.exceptions.DomainException;
+import model.exceptions.BusinessException;
 
 public class MainProgram {
 
-    public static void main(String[] args) {
-        Locale.setDefault(Locale.US);
-        Scanner sc = new Scanner(System.in);
+	public static void main(String[] args) {
+		
+		Locale.setDefault(Locale.US);
+		Scanner sc = new Scanner(System.in);
 
-        try {
-            System.out.println("=== Enter account data ===");
-            System.out.print("Account Number: ");
-            int accountNumber = sc.nextInt();
+		System.out.println("Informe os dados da conta");
+		System.out.print("Numero: ");
+		int number = sc.nextInt();
+		System.out.print("Titular: ");
+		sc.nextLine();
+		String holder = sc.nextLine();
+		System.out.print("Saldo inicial: ");
+		double balance = sc.nextDouble();
+		System.out.print("Limite de saque: ");
+		double withdrawLimit = sc.nextDouble();
 
-            System.out.print("Account Holder: ");
-            sc.nextLine(); // limpar o buffer
-            String accountHolder = sc.nextLine();
+		Account acc = new Account(number, holder, balance, withdrawLimit);
+		
+		System.out.println();
+		System.out.print("Informe uma quantia para sacar: ");
+		double amount = sc.nextDouble();
+		
+		try {
+			acc.withdraw(amount);
+			System.out.printf("Novo saldo: %.2f%n", acc.getBalance());
+		}
+		catch (BusinessException e) {
+			System.out.println(e.getMessage());
+		}
+		
+		sc.close();
+	}
 
-            System.out.print("Initial Balance: ");
-            double balance = sc.nextDouble();
-
-            System.out.print("Withdraw Limit: ");
-            double withdrawLimit = sc.nextDouble();
-
-            Account acc = new Account(accountNumber, accountHolder, balance, withdrawLimit);
-
-            System.out.println();
-            System.out.println("=== Account Summary ===");
-            System.out.println(acc);
-
-            System.out.print("Enter amount for withdraw: ");
-            double withdraw = sc.nextDouble();
-
-            acc.withdraw(withdraw);
-
-            System.out.println();
-            System.out.printf("New Balance: %.2f%n", acc.getBalance());
-
-        } 
-        catch (DomainException e) {
-            System.out.println("Withdraw error: " + e.getMessage());
-        } 
-        catch (InputMismatchException e) {
-            System.out.println("Input error: please enter valid numeric values.");
-        } 
-        catch (Exception e) {
-            System.out.println("Unexpected error: " + e.getMessage());
-        } 
-        finally {
-            sc.close();
-        }
-    }
 }
