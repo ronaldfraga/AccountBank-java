@@ -1,0 +1,19 @@
+# Eclipse
+/.settings/
+/bin/
+/.project
+/.classpath
+
+# Windows
+Thumbs.db
+.DS_Store
+Desktop.ini
+
+# Gradle/Build
+/build/
+/.gradle/
+out/
+
+# IDEs
+*.iml
+.idea/
